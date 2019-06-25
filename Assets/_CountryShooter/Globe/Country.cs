@@ -4,8 +4,34 @@ using UnityEngine;
 
 public class Country : MonoBehaviour
 {
+  public delegate bool CountryHitAction(string countryName);
+  public static event CountryHitAction OnCountryHit;
+
+  private bool isActive = true;
   public string countryName;
   public Constants.Region region;
+
+  void Awake()
+  {
+    GameController.OnGameStart += SetActive;
+    GameController.OnGameOver += SetInactive;
+  }
+
+  void onDisable()
+  {
+    GameController.OnGameStart -= SetActive;
+    GameController.OnGameOver -= SetInactive;
+  }
+
+  void SetActive()
+  {
+    isActive = true;
+  }
+
+  void SetInactive()
+  {
+    isActive = false;
+  }
 
   void OnCollisionEnter(Collision collision)
   {
@@ -14,9 +40,10 @@ public class Country : MonoBehaviour
     bulletCollider.enabled = false;
 
     // Only check answer if Playing
-    if (GameController.instance.gameStatus == GameController.GameStatus.Playing)
+    if (isActive)
     {
-      GameController.instance.CheckAnswer(countryName);
+      if (OnCountryHit != null)
+        OnCountryHit(countryName);
     }
   }
 }

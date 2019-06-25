@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  This is the place to store each of the country game objects, and get a
+  randomized list of countries.
+*/
+
 public class Countries : MonoBehaviour
 {
   public GameObject[] allCountries;

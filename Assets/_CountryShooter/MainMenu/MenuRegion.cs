@@ -4,14 +4,42 @@ using UnityEngine;
 
 public class MenuRegion : MonoBehaviour
 {
+  public delegate void MenuClickedAction(Constants.Region region);
+  public static event MenuClickedAction OnMenuClicked;
+
+  private bool isActive = true;
   public Constants.Region region;
+
+  void Awake()
+  {
+    GameController.OnGameStart += SetInactive;
+    GameController.OnGameOver += SetActive;
+  }
+
+  void onDisable()
+  {
+    GameController.OnGameStart -= SetInactive;
+    GameController.OnGameOver -= SetActive;
+  }
+
+  void SetActive()
+  {
+    isActive = true;
+  }
+
+  void SetInactive()
+  {
+    isActive = false;
+  }
+
 
   void OnCollisionEnter(Collision collision)
   {
     // Only start a game from the main menu
-    if (GameController.instance.gameStatus == GameController.GameStatus.MainMenu)
+    if (isActive)
     {
-      GameController.instance.StartGame(region);
+      if (OnMenuClicked != null)
+        OnMenuClicked(region);
     }
   }
 }
