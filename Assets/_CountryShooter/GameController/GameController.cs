@@ -39,11 +39,6 @@ public class GameController : MonoBehaviour
     globeCountriesScript = globe.GetComponent<Countries>();
   }
 
-  void Start()
-  {
-    GameActions.instance.Call(GameActions.ActionTypes.MENU_CLICKED, Constants.Region.Africa);
-  }
-
   // Start is called before the first frame update
   public void StartGame(Constants.Region region)
   {
