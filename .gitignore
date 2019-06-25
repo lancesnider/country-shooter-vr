@@ -1,0 +1,6 @@
+*
+!*/
+!.gitignore
+!country_shooter_vr.unitypackage
+!/Assets/_CountryShooter/**/*.cs
+!/Assets/_CountryShooter/**/*.cs.meta
