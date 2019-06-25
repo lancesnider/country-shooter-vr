@@ -14,13 +14,9 @@ Some horror stories have convinced me not to use GitHub for prefabs and scenes (
 
 ## Architecture
 
-In this game, data only flows in one direction and all top-level game data lives in the Store. The Store is the single source of truth. By inspecting the store, you should know everything that's happening within the game.
+For top-level data (game state, score, currently selected country, etc.), I've chosed a one-direction data flow.
 
-1. Player Interaction - When a player does something (selects a menu item, clicks pause, etc.) and action is fired.
-2. Action - All actions live in the same place, making it really easy to see what the user is able to do. Each action is just an action type (`MENU_CLICKED`) along with the relevant data (which menu item got clicked).
-
-- It verifies the data (does `MENU_CLICKED` have a `string` attached?).
-- Then routes it to the relevant Store function.
-
-3. Store function - These are the only functions that are allowed to modify the store!
-4. The Store - When any bit of data in the store changes, an event is fired and the subscribers update accordingly.
+1. All top-level data lives within the Store. This is the single source of truth!
+2. When data within the store is updated, events are fired, informing any subscribed element within the scene. For example, if `isPaused` changes to `true`, the gamer timer will know and will stop counting.
+3. When something happens within the game (user clicks pause, a bullet hits a country, etc.) an Action is fired. An action is just an action type along with some data (`Action.PAUSE_CLICKED`, `true`). The verifies the data (does `MENU_CLICKED` have a `string` attached?), then routes it to the relevant Store function. All actions live in the same place, making it really easy to see what your player is able to do.
+4. The action calls a special function (a Store Function), which is the only thing that's allowed to update the store. No more hunting around to figure out which script is updating data. Once the store function is called, go back to step 1.

@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameActions : MonoBehaviour
 {
   public static GameActions instance;
+  public Store store;
 
   public enum ActionTypes
   {
@@ -49,9 +50,9 @@ public class GameActions : MonoBehaviour
     switch (actionType)
     {
       case ActionTypes.MENU_CLICKED:
-        if (data is GameObject)
+        if (data is Constants.Region)
         {
-          Debug.Log("is");
+          store.GameStatus = 2;
         }
         else
         {
