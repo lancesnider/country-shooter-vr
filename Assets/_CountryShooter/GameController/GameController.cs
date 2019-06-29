@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
   public delegate void GameStartAction();
   public static event GameStartAction OnGameStart;
 
-  public delegate void SetQuestionAction();
+  public delegate void SetQuestionAction(Constants.Region region);
   public static event SetQuestionAction OnSetQuestion;
 
   public GameObject globe;
@@ -19,9 +19,9 @@ public class GameController : MonoBehaviour
 
   public int score = 0;
   private int incorrectAnswers;
-  public string currentCountry;
+  public string currentCountryName;
   private int currentCountryIndex;
-  private string[] randomCountries;
+  private GameObject[] randomCountries;
 
   void Awake()
   {
@@ -61,16 +61,19 @@ public class GameController : MonoBehaviour
       return;
     }
 
-    currentCountry = randomCountries[currentCountryIndex];
+    GameObject currentCountry = randomCountries[currentCountryIndex];
+    Country currentCountryScript = currentCountry.GetComponent<Country>();
+    currentCountryName = currentCountryScript.countryName;
+
     Debug.Log("Find " + currentCountry);
 
     if (OnSetQuestion != null)
-      OnSetQuestion();
+      OnSetQuestion(currentCountryScript.region);
   }
 
   public bool CheckAnswer(string answer)
   {
-    if (answer == currentCountry)
+    if (answer == currentCountryName)
     {
       Debug.Log("Correct!");
       currentCountryIndex++;

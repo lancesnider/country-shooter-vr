@@ -17,12 +17,11 @@ public class Countries : MonoBehaviour
   public GameObject[] northAmericanCountries;
   public GameObject[] southAmericanCountries;
 
-  public string[] getRandomizedCountries(Constants.Region region)
+  public GameObject[] getRandomizedCountries(Constants.Region region)
   {
     GameObject[] countriesOfARegion = getCountriesByRegion(region);
-    string[] countryNames = getCountryNames(countriesOfARegion);
 
-    return Shuffle(countryNames);
+    return Shuffle(countriesOfARegion);
   }
 
   private GameObject[] getCountriesByRegion(Constants.Region region)
@@ -46,27 +45,14 @@ public class Countries : MonoBehaviour
     }
   }
 
-  private string[] getCountryNames(GameObject[] countryGameObjects)
-  {
-    string[] countryNames;
-    countryNames = new string[countryGameObjects.Length];
-    for (int i = 0; i < countryGameObjects.Length; i++)
-    {
-      Country countryScript = countryGameObjects[i].GetComponent<Country>();
-      countryNames[i] = countryScript.countryName;
-    }
-
-    return Shuffle(countryNames);
-  }
-
-  private string[] Shuffle(string[] countriesToShuffle)
+  private GameObject[] Shuffle(GameObject[] countriesToShuffle)
   {
     int countriesLength = countriesToShuffle.Length;
-    string tempCountry;
+    GameObject tempCountry;
 
     // For each item in the array:
     // 1. Pick a random index
-    // 2. Swap the current string with the random one
+    // 2. Swap the current GameObject with the random one
     for (int i = 0; i < countriesLength; i++)
     {
       int randomIndex = Random.Range(0, countriesLength);
