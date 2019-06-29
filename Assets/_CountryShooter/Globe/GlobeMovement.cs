@@ -11,6 +11,8 @@ public class GlobeMovement : MonoBehaviour
   public Vector3 northAmericaEulerRotation;
   public Vector3 southAmericaEulerRotation;
 
+  private Constants.Region lastRegion;
+
   void Awake()
   {
     GameController.OnSetQuestion += RotateToRegion;
@@ -23,8 +25,13 @@ public class GlobeMovement : MonoBehaviour
 
   void RotateToRegion(Constants.Region region)
   {
-    Quaternion rotateDirection = GetRotationByRegion(region);
-    StartCoroutine(RotateTo(rotateDirection));
+    // Only rotate if you're switching regions
+    if (region != lastRegion)
+    {
+      Quaternion rotateDirection = GetRotationByRegion(region);
+      StartCoroutine(RotateTo(rotateDirection));
+      lastRegion = region;
+    }
   }
 
   Quaternion GetRotationByRegion(Constants.Region region)
