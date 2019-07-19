@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
 
   public int score = 0;
   private int incorrectAnswers;
-  public string currentCountryName;
+  public string currentCountryID;
   private int currentCountryIndex;
   private GameObject[] randomCountries;
 
@@ -63,9 +63,9 @@ public class GameController : MonoBehaviour
 
     GameObject currentCountry = randomCountries[currentCountryIndex];
     Country currentCountryScript = currentCountry.GetComponent<Country>();
-    currentCountryName = currentCountryScript.countryName;
+    currentCountryID = currentCountryScript.countryID;
 
-    Debug.Log("Find " + currentCountry);
+    Debug.Log("Find " + currentCountryScript.countryName);
 
     if (OnSetQuestion != null)
       OnSetQuestion(currentCountryScript.region);
@@ -73,7 +73,7 @@ public class GameController : MonoBehaviour
 
   public bool CheckAnswer(string answer)
   {
-    if (answer == currentCountryName)
+    if (answer == currentCountryID)
     {
       Debug.Log("Correct!");
       currentCountryIndex++;

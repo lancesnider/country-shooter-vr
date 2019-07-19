@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Globalization;
 
 public class Country : MonoBehaviour
 {
@@ -8,13 +9,20 @@ public class Country : MonoBehaviour
   public static event CountryHitAction OnCountryHit;
 
   private bool isActive = true;
+  public string countryID;
   public string countryName;
   public Constants.Region region;
+  public string countryNameOverride;
 
   void Awake()
   {
     GameController.OnGameStart += SetActive;
     GameController.OnGameOver += SetInactive;
+    countryID = gameObject.name;
+
+    string countryIDWithoutUnderscore = countryName.Replace("_", " ");
+    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+    countryName = textInfo.ToTitleCase(countryIDWithoutUnderscore);
   }
 
   void onDisable()
@@ -43,7 +51,7 @@ public class Country : MonoBehaviour
     if (isActive)
     {
       if (OnCountryHit != null)
-        OnCountryHit(countryName);
+        OnCountryHit(countryID);
     }
   }
 }
