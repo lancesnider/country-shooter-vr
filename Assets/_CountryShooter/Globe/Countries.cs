@@ -17,6 +17,46 @@ public class Countries : MonoBehaviour
   public GameObject[] northAmericanCountries;
   public GameObject[] southAmericanCountries;
 
+  void Start()
+  {
+    foreach (GameObject country in africanCountries)
+    {
+      Country countryScript = country.GetComponent<Country>();
+      countryScript.region = Constants.Region.Africa;
+    }
+
+    foreach (GameObject country in asianCountries)
+    {
+      Country countryScript = country.GetComponent<Country>();
+      countryScript.region = Constants.Region.Asia;
+    }
+
+    foreach (GameObject country in australianCountries)
+    {
+      Country countryScript = country.GetComponent<Country>();
+      countryScript.region = Constants.Region.Australia;
+    }
+
+    foreach (GameObject country in europeanCountries)
+    {
+      Country countryScript = country.GetComponent<Country>();
+      countryScript.region = Constants.Region.Europe;
+    }
+
+    foreach (GameObject country in northAmericanCountries)
+    {
+      Country countryScript = country.GetComponent<Country>();
+      countryScript.region = Constants.Region.NorthAmerica;
+    }
+
+    foreach (GameObject country in southAmericanCountries)
+    {
+      Country countryScript = country.GetComponent<Country>();
+      countryScript.region = Constants.Region.SouthAmerica;
+    }
+
+  }
+
   public GameObject[] getRandomizedCountries(Constants.Region region)
   {
     GameObject[] countriesOfARegion = getCountriesByRegion(region);
