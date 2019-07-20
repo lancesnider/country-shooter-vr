@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Globalization;
 
+public enum CountryState { Right, Wrong, Default };
+
 public class Country : MonoBehaviour
 {
+  private CountryState countryState = CountryState.Default;
+
   public delegate bool CountryHitAction(string countryName);
   public static event CountryHitAction OnCountryHit;
 
@@ -42,7 +46,7 @@ public class Country : MonoBehaviour
 
   void SetActive()
   {
-    countryMaterial.color = defaultColor;
+    SetCountryState(CountryState.Default);
     isActive = true;
   }
 
@@ -53,9 +57,32 @@ public class Country : MonoBehaviour
 
   void ResetIncorrect(Constants.Region region)
   {
-    if (countryMaterial.color == wrongColor)
+    if (countryState == CountryState.Wrong)
     {
-      countryMaterial.color = defaultColor;
+      SetCountryState(CountryState.Default);
+    }
+  }
+
+
+  void SetCountryState(CountryState newState)
+  {
+    if (newState != countryState)
+    {
+      switch (newState)
+      {
+        case CountryState.Default:
+          countryMaterial.color = defaultColor;
+          break;
+        case CountryState.Wrong:
+          countryMaterial.color = wrongColor;
+          break;
+        case CountryState.Right:
+          countryMaterial.color = rightColor;
+          break;
+      }
+
+
+      countryState = newState;
     }
   }
 
@@ -73,11 +100,11 @@ public class Country : MonoBehaviour
         bool correct = OnCountryHit(countryID);
         if (correct)
         {
-          countryMaterial.color = rightColor;
+          SetCountryState(CountryState.Right);
         }
-        else if (countryMaterial.color == defaultColor)
+        else if (countryState == CountryState.Default)
         {
-          countryMaterial.color = wrongColor;
+          SetCountryState(CountryState.Wrong);
         }
       }
     }
