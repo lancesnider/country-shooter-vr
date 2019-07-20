@@ -21,6 +21,7 @@ public class Country : MonoBehaviour
   public string countryName;
   public Constants.Region region;
   public string countryNameOverride;
+  public CountryTitle countryTitle;
 
   private Material countryMaterial;
 
@@ -74,6 +75,7 @@ public class Country : MonoBehaviour
           countryMaterial.color = defaultColor;
           break;
         case CountryState.Wrong:
+          countryTitle.setTitle(gameObject);
           countryMaterial.color = wrongColor;
           break;
         case CountryState.Right:
@@ -92,8 +94,8 @@ public class Country : MonoBehaviour
     Collider bulletCollider = collision.collider.GetComponent<Collider>();
     bulletCollider.enabled = false;
 
-    // Only check answer if Playing
-    if (isActive)
+    // Only check answer if Playing && it's in a default state
+    if (isActive && countryState == CountryState.Default)
     {
       if (OnCountryHit != null)
       {
