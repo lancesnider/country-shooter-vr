@@ -8,20 +8,28 @@ public class Country : MonoBehaviour
   public delegate bool CountryHitAction(string countryName);
   public static event CountryHitAction OnCountryHit;
 
+  private Color defaultColor = new Color(0.08627451f, 0.7254902f, 0.3607843f);
+  private Color wrongColor = new Color(0.9490197f, 0.3764706f, 0.3333333f);
+  private Color rightColor = new Color(0.9176471f, 0.8509805f, 0.1882353f);
+
   private bool isActive = true;
   public string countryID;
   public string countryName;
   public Constants.Region region;
   public string countryNameOverride;
 
+  private Material countryMaterial;
+
   void Awake()
   {
     GameController.OnGameStart += SetActive;
     GameController.OnGameOver += SetInactive;
+    GameController.OnSetQuestion += ResetIncorrect;
     countryID = gameObject.name;
 
-    string countryIDWithoutUnderscore = countryName.Replace("_", " ");
+    countryMaterial = GetComponent<Renderer>().material;
     TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+    string countryIDWithoutUnderscore = countryID.Replace("_", " ");
     countryName = textInfo.ToTitleCase(countryIDWithoutUnderscore);
   }
 
@@ -29,16 +37,26 @@ public class Country : MonoBehaviour
   {
     GameController.OnGameStart -= SetActive;
     GameController.OnGameOver -= SetInactive;
+    GameController.OnSetQuestion -= ResetIncorrect;
   }
 
   void SetActive()
   {
+    countryMaterial.color = defaultColor;
     isActive = true;
   }
 
   void SetInactive()
   {
     isActive = false;
+  }
+
+  void ResetIncorrect(Constants.Region region)
+  {
+    if (countryMaterial.color == wrongColor)
+    {
+      countryMaterial.color = defaultColor;
+    }
   }
 
   void OnCollisionEnter(Collision collision)
@@ -51,7 +69,17 @@ public class Country : MonoBehaviour
     if (isActive)
     {
       if (OnCountryHit != null)
-        OnCountryHit(countryID);
+      {
+        bool correct = OnCountryHit(countryID);
+        if (correct)
+        {
+          countryMaterial.color = rightColor;
+        }
+        else if (countryMaterial.color == defaultColor)
+        {
+          countryMaterial.color = wrongColor;
+        }
+      }
     }
   }
 }

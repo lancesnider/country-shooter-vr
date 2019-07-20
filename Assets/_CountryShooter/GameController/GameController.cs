@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -19,9 +20,13 @@ public class GameController : MonoBehaviour
 
   public int score = 0;
   private int incorrectAnswers;
+  private List<GameObject> incorrectCountries;
+  private GameObject currentCountry;
   public string currentCountryID;
   private int currentCountryIndex;
   private GameObject[] randomCountries;
+
+  public TextMeshPro instructionText;
 
   void Awake()
   {
@@ -61,11 +66,11 @@ public class GameController : MonoBehaviour
       return;
     }
 
-    GameObject currentCountry = randomCountries[currentCountryIndex];
+    currentCountry = randomCountries[currentCountryIndex];
     Country currentCountryScript = currentCountry.GetComponent<Country>();
     currentCountryID = currentCountryScript.countryID;
 
-    Debug.Log("Find " + currentCountryScript.countryName);
+    instructionText.text = "Find " + currentCountryScript.countryName;
 
     if (OnSetQuestion != null)
       OnSetQuestion(currentCountryScript.region);
