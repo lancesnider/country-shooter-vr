@@ -57,11 +57,29 @@ public class Countries : MonoBehaviour
 
   }
 
-  public GameObject[] getRandomizedCountries(Constants.Region region)
+  public GameObject[] getRandomizedCountries(Constants.Region region, int difficulty)
   {
     GameObject[] countriesOfARegion = getCountriesByRegion(region);
+    GameObject[] sortedByDifficulty = getCountriesByDifficulty(countriesOfARegion, difficulty);
+    return Shuffle(sortedByDifficulty);
+  }
 
-    return Shuffle(countriesOfARegion);
+  private GameObject[] getCountriesByDifficulty(GameObject[] countries, int difficulty)
+  {
+    if (difficulty == 3) return countries;
+
+    List<GameObject> countriesOfDifficulty = new List<GameObject>();
+    foreach (GameObject country in countries)
+    {
+      Country countryScript = country.GetComponent<Country>();
+      if (countryScript.difficulty <= difficulty)
+      {
+        countriesOfDifficulty.Add(country);
+      }
+
+    }
+    return countriesOfDifficulty.ToArray();
+
   }
 
   private GameObject[] getCountriesByRegion(Constants.Region region)
