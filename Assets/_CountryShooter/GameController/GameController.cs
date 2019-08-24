@@ -11,6 +11,15 @@ public class GameController : MonoBehaviour
   public delegate void GameStartAction();
   public static event GameStartAction OnGameStart;
 
+  public delegate void GameSetRegionAction(Constants.Region region);
+  public static event GameSetRegionAction OnSetRegion;
+
+  public delegate void CorrectAnswerAction();
+  public static event CorrectAnswerAction OnCorrectAnswer;
+
+  public delegate void IncorrectAnswerAction();
+  public static event IncorrectAnswerAction OnIncorrectAnswer;
+
   public delegate void GameSetDifficultyAction(int difficulty);
   public static event GameSetDifficultyAction OnGameSetDifficulty;
 
@@ -22,9 +31,6 @@ public class GameController : MonoBehaviour
   private GlobeMovement globeMovementScript;
 
   public int difficulty = 0;
-  public int score = 0;
-  private int incorrectAnswers;
-  private List<GameObject> incorrectCountries;
   private GameObject currentCountry;
   public string currentCountryID;
   private int currentCountryIndex;
@@ -53,12 +59,16 @@ public class GameController : MonoBehaviour
     randomCountries = globeCountriesScript.getRandomizedCountries(region, difficulty);
 
     // Reset variables
-    score = 0;
-    incorrectAnswers = 0;
     currentCountryIndex = 0;
+
     if (OnGameStart != null)
     {
       OnGameStart();
+    }
+
+    if (OnSetRegion != null)
+    {
+      OnSetRegion(region);
     }
 
     if (OnGameSetDifficulty != null)
@@ -92,11 +102,16 @@ public class GameController : MonoBehaviour
     if (answer == currentCountryID)
     {
       StartCoroutine(CorrectAnswer());
+      if (OnCorrectAnswer != null)
+        OnCorrectAnswer();
+
       return true;
     }
 
+    if (OnIncorrectAnswer != null)
+      OnIncorrectAnswer();
+
     Debug.Log("Incorrect.");
-    incorrectAnswers++;
     return false;
   }
 
