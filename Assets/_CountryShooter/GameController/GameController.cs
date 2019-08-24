@@ -91,16 +91,21 @@ public class GameController : MonoBehaviour
   {
     if (answer == currentCountryID)
     {
-      Debug.Log("Correct!");
-      currentCountryIndex++;
-      SetQuestion();
+      StartCoroutine(CorrectAnswer());
       return true;
     }
 
     Debug.Log("Incorrect.");
     incorrectAnswers++;
     return false;
+  }
 
+  private IEnumerator CorrectAnswer()
+  {
+    Debug.Log("Correct!");
+    yield return new WaitForSeconds(0.5f);
+    currentCountryIndex++;
+    SetQuestion();
   }
 
   public void EndGame()
