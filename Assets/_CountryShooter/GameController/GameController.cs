@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour
   public delegate void GameStartAction();
   public static event GameStartAction OnGameStart;
 
+  public delegate void GameSetDifficultyAction(int difficulty);
+  public static event GameSetDifficultyAction OnGameSetDifficulty;
+
   public delegate void SetQuestionAction(Constants.Region region);
   public static event SetQuestionAction OnSetQuestion;
 
@@ -18,6 +21,7 @@ public class GameController : MonoBehaviour
   private Countries globeCountriesScript;
   private GlobeMovement globeMovementScript;
 
+  public int difficulty = 0;
   public int score = 0;
   private int incorrectAnswers;
   private List<GameObject> incorrectCountries;
@@ -46,14 +50,21 @@ public class GameController : MonoBehaviour
   public void StartGame(Constants.Region region)
   {
     Debug.Log("Start Game");
-    randomCountries = globeCountriesScript.getRandomizedCountries(region);
+    randomCountries = globeCountriesScript.getRandomizedCountries(region, difficulty);
 
     // Reset variables
     score = 0;
     incorrectAnswers = 0;
     currentCountryIndex = 0;
     if (OnGameStart != null)
+    {
       OnGameStart();
+    }
+
+    if (OnGameSetDifficulty != null)
+    {
+      OnGameSetDifficulty(difficulty);
+    }
 
     SetQuestion();
   }
@@ -95,6 +106,7 @@ public class GameController : MonoBehaviour
   public void EndGame()
   {
     Debug.Log("Game over!");
+    instructionText.text = "";
     if (OnGameOver != null)
       OnGameOver();
   }
