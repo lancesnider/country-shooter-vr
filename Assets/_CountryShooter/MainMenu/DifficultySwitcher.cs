@@ -12,6 +12,12 @@ public class DifficultySwitcher : MonoBehaviour
   public delegate void DifficultyChangedAction(int difficulty);
   public static event DifficultyChangedAction OnDifficultyChanged;
 
+  void Start()
+  {
+    if (OnDifficultyChanged != null)
+      OnDifficultyChanged(difficulty);
+  }
+
   void OnCollisionEnter(Collision collision)
   {
     int newDifficulty = (difficulty + 1) % 3;
