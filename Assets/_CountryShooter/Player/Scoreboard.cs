@@ -26,7 +26,7 @@ public class Scoreboard : MonoBehaviour
     GameController.OnCorrectAnswer += correctAnswer;
     GameController.OnIncorrectAnswer += incorrectAnswer;
     GameController.OnSetQuestion += newQuestion;
-    GameController.OnGameSetDifficulty += setDifficulty;
+    DifficultySwitcher.OnDifficultyChanged += setDifficulty;
   }
 
   void onDisable()
@@ -36,7 +36,7 @@ public class Scoreboard : MonoBehaviour
     GameController.OnCorrectAnswer -= correctAnswer;
     GameController.OnIncorrectAnswer -= incorrectAnswer;
     GameController.OnSetQuestion -= newQuestion;
-    GameController.OnGameSetDifficulty -= setDifficulty;
+    DifficultySwitcher.OnDifficultyChanged -= setDifficulty;
   }
 
   private void setDifficulty(int gameDifficulty)
