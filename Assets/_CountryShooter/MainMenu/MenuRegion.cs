@@ -32,8 +32,7 @@ public class MenuRegion : MonoBehaviour
     isActive = false;
   }
 
-
-  void OnCollisionEnter(Collision collision)
+  public void MenuClicked(Constants.Region currentRegion)
   {
     // Only start a game from the main menu
     if (isActive)
@@ -41,5 +40,11 @@ public class MenuRegion : MonoBehaviour
       if (OnMenuClicked != null)
         OnMenuClicked(region);
     }
+  }
+
+
+  void OnCollisionEnter(Collision collision)
+  {
+    MenuClicked(region);
   }
 }
