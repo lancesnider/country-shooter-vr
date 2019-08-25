@@ -6,6 +6,7 @@ using TMPro;
 public class GameOverPanel : MonoBehaviour
 {
   public string[] difficultyTranslations;
+  public PlayAgain playAgainScript;
 
   public TextMeshPro titleText;
   public TextMeshPro difficultyText;
@@ -27,6 +28,8 @@ public class GameOverPanel : MonoBehaviour
 
   public void GameOver(int score, Constants.Region region, int difficulty)
   {
+    playAgainScript.region = region;
+
     titleText.text = "Game Over";
     difficultyText.text = "Difficulty: " + difficultyTranslations[difficulty];
     regionText.text = "Region: " + region;

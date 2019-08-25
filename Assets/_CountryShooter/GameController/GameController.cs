@@ -40,6 +40,7 @@ public class GameController : MonoBehaviour
     instructionText.text = "";
 
     MenuRegion.OnMenuClicked += StartGame;
+    PlayAgain.OnMenuClicked += StartGame;
     Country.OnCountryHit += CheckAnswer;
     DifficultySwitcher.OnDifficultyChanged += DifficultyChanged;
 
@@ -49,6 +50,7 @@ public class GameController : MonoBehaviour
   void onDisable()
   {
     MenuRegion.OnMenuClicked -= StartGame;
+    PlayAgain.OnMenuClicked -= StartGame;
     Country.OnCountryHit -= CheckAnswer;
     DifficultySwitcher.OnDifficultyChanged -= DifficultyChanged;
   }
