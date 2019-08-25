@@ -20,9 +20,6 @@ public class GameController : MonoBehaviour
   public delegate void IncorrectAnswerAction();
   public static event IncorrectAnswerAction OnIncorrectAnswer;
 
-  public delegate void GameSetDifficultyAction(int difficulty);
-  public static event GameSetDifficultyAction OnGameSetDifficulty;
-
   public delegate void SetQuestionAction(Constants.Region region);
   public static event SetQuestionAction OnSetQuestion;
 
@@ -44,6 +41,7 @@ public class GameController : MonoBehaviour
 
     MenuRegion.OnMenuClicked += StartGame;
     Country.OnCountryHit += CheckAnswer;
+    DifficultySwitcher.OnDifficultyChanged += DifficultyChanged;
 
     globeCountriesScript = globe.GetComponent<Countries>();
   }
@@ -52,6 +50,7 @@ public class GameController : MonoBehaviour
   {
     MenuRegion.OnMenuClicked -= StartGame;
     Country.OnCountryHit -= CheckAnswer;
+    DifficultySwitcher.OnDifficultyChanged -= DifficultyChanged;
   }
 
   // Start is called before the first frame update
@@ -73,12 +72,12 @@ public class GameController : MonoBehaviour
       OnSetRegion(region);
     }
 
-    if (OnGameSetDifficulty != null)
-    {
-      OnGameSetDifficulty(difficulty);
-    }
-
     SetQuestion();
+  }
+
+  private void DifficultyChanged(int newDifficulty)
+  {
+    difficulty = newDifficulty;
   }
 
   public void SetQuestion()

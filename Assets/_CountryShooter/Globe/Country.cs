@@ -32,7 +32,7 @@ public class Country : MonoBehaviour
     GameController.OnGameStart += SetActive;
     GameController.OnGameOver += SetInactive;
     GameController.OnSetQuestion += ResetIncorrect;
-    GameController.OnGameSetDifficulty += SetDifficulty;
+    DifficultySwitcher.OnDifficultyChanged += SetDifficulty;
     countryID = gameObject.name;
 
     countryMaterial = GetComponent<Renderer>().material;
@@ -46,7 +46,7 @@ public class Country : MonoBehaviour
     GameController.OnGameStart -= SetActive;
     GameController.OnGameOver -= SetInactive;
     GameController.OnSetQuestion -= ResetIncorrect;
-    GameController.OnGameSetDifficulty -= SetDifficulty;
+    DifficultySwitcher.OnDifficultyChanged -= SetDifficulty;
   }
 
   void SetActive()
@@ -66,6 +66,11 @@ public class Country : MonoBehaviour
     {
       isActive = false;
       countryMaterial.color = tooHardColor;
+    }
+    else
+    {
+      isActive = true;
+      countryMaterial.color = defaultColor;
     }
   }
 
