@@ -11,6 +11,7 @@ public class Scoreboard : MonoBehaviour
   public int incorrectPenalty;
 
   public TextMeshPro scoreText;
+  public GameOverPanel gameOverPanelScript;
 
   private int difficulty;
   private int score;
@@ -56,7 +57,7 @@ public class Scoreboard : MonoBehaviour
 
   private void gameOver()
   {
-    // save the final score
+    gameOverPanelScript.GameOver(score, region, difficulty);
   }
 
   private void correctAnswer()
