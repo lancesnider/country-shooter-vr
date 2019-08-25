@@ -40,6 +40,8 @@ public class GameController : MonoBehaviour
 
   void Awake()
   {
+    instructionText.text = "";
+
     MenuRegion.OnMenuClicked += StartGame;
     Country.OnCountryHit += CheckAnswer;
 
