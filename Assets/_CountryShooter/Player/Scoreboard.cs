@@ -19,6 +19,8 @@ public class Scoreboard : MonoBehaviour
   private Constants.Region region;
   private int timeToAnswer;
 
+  private float timeOfQuestion;
+
   void Awake()
   {
     GameController.OnSetRegion += gameStart;
@@ -53,6 +55,7 @@ public class Scoreboard : MonoBehaviour
   private void newQuestion(Constants.Region region)
   {
     incorrectCount = 0;
+    timeOfQuestion = Time.time;
   }
 
   private void gameOver()
@@ -63,8 +66,11 @@ public class Scoreboard : MonoBehaviour
   private void correctAnswer()
   {
     int scoreForQuestion = possibleScoreByDifficulty[difficulty];
-    // to do: timer
-    //if (timeToAnswer < maxTimeForSpeedBonus) scoreForQuestion += speedBonus;
+
+    // Add time bonus
+    if ((Time.time - timeOfQuestion) < maxTimeForSpeedBonus){
+      scoreForQuestion += speedBonus;
+    }
     // Lose points for each incorrect answer
     scoreForQuestion -= incorrectCount * incorrectPenalty;
     // Mimimum 20 points for a correct answer
