@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Globalization;
 
-public enum CountryState { Right, Wrong, Default, tooHard };
+public enum CountryState { Right, Wrong, Default };
 
 public class Country : MonoBehaviour
 {
   private CountryState countryState = CountryState.Default;
+  private bool isTooHard;
 
   public delegate bool CountryHitAction(string countryName);
   public static event CountryHitAction OnCountryHit;
@@ -65,10 +66,12 @@ public class Country : MonoBehaviour
     if (difficulty > gameDifficulty)
     {
       isActive = false;
+      isTooHard = true;
       countryMaterial.color = tooHardColor;
     }
     else
     {
+      isTooHard = false;
       isActive = true;
       countryMaterial.color = defaultColor;
     }
@@ -113,7 +116,7 @@ public class Country : MonoBehaviour
     bulletCollider.enabled = false;
 
     // Only check answer if Playing && it's in a default state
-    if (isActive && countryState == CountryState.Default)
+    if (isActive && countryState == CountryState.Default && !isTooHard)
     {
       if (OnCountryHit != null)
       {
